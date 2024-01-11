@@ -125,14 +125,14 @@ class ConnectionQueue:
     ) -> None:
         """Create a connection task."""
         if self._ha_create_task:
-            _LOGGER.warning("HA connecting")
+            _LOGGER.info("HA connecting")
             self._connection_task = self._ha_create_task(
                 target=device.establish_connection(
                     use_notification_delay=use_notification_delay
                 )
             )
         else:
-            _LOGGER.warning("Normal connecting")
+            _LOGGER.info("Normal connecting")
             self._connection_task = get_event_loop().create_task(
                 device.establish_connection(
                     use_notification_delay=use_notification_delay
@@ -218,7 +218,7 @@ class MotionDevice:
         if ble_device:
             self._ble_device = ble_device
         else:
-            _LOGGER.warning(
+            _LOGGER.info(
                 "Could not find BLEDevice, creating new BLEDevice from address"
             )
             self._ble_device = BLEDevice(
@@ -249,10 +249,8 @@ class MotionDevice:
         if self._disconnect_timer:
             # Cancel current timer
             if callable(self._disconnect_timer):
-                _LOGGER.warning("Cancel HA Later")
                 self._disconnect_timer()
             else:
-                _LOGGER.warning("Cancel later")
                 self._disconnect_timer.cancel()
 
     def refresh_disconnect_timer(
@@ -279,12 +277,10 @@ class MotionDevice:
 
         self._disconnect_time = new_disconnect_time
         if self._ha_call_later:
-            _LOGGER.warning("HA Later")
             self._disconnect_timer = self._ha_call_later(
                 delay=timeout, action=_disconnect_later
             )
         else:
-            _LOGGER.warning("Later")
             self._disconnect_timer = get_event_loop().call_later(
                 timeout, create_task, _disconnect_later()
             )
@@ -419,7 +415,7 @@ class MotionDevice:
         """Write a message to the command characteristic, return whether or not the command was successfully executed."""
         # Command must be generated just before sending due get_time timing
         command = MotionCrypt.encrypt(command_prefix + MotionCrypt.get_time())
-        _LOGGER.warning("Sending message: %s", MotionCrypt.decrypt(command))
+        _LOGGER.info("Sending message: %s", MotionCrypt.decrypt(command))
         # response=False to solve Unlikely Error: [org.bluez.Error.Failed] Operation failed with ATT error: 0x0e (Unlikely Error)
         # response=True: 0.20s, response=False: 0.0005s
         number_of_tries = 0
@@ -433,7 +429,7 @@ class MotionDevice:
                         response=True,
                     )
                     b = time()
-                    _LOGGER.warning("Received response in %ss", str(b - a))
+                    _LOGGER.info("Received response in %ss", str(b - a))
                     return True
                 else:
                     return False

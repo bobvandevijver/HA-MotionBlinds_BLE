@@ -52,9 +52,9 @@ class Service:
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up MotionBlinds BLE integration."""
 
-    _LOGGER.warning("Loading MotionBlinds BLE integration")
+    _LOGGER.info("Loading MotionBlinds BLE integration")
     # The correct time is needed for encryption
-    _LOGGER.warning(f"Current timezone: {hass.config.time_zone}")
+    _LOGGER.info(f"Current timezone: {hass.config.time_zone}")
     MotionCrypt.set_timezone(hass.config.time_zone)
 
     def generic_entity_service(
@@ -70,7 +70,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
         return service_func
 
-    _LOGGER.warning("Registering services")
+    _LOGGER.info("Registering services")
 
     async def connect_service(blind: GenericBlind, call: ServiceCall) -> None:
         if await blind.async_connect():
@@ -115,7 +115,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             DOMAIN, serv.service, serv.service_func, schema=serv.schema
         )
 
-    _LOGGER.warning("Done registering services")
+    _LOGGER.info("Done registering services")
 
     return True
 

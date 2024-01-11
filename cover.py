@@ -328,7 +328,7 @@ class GenericBlind(CoverEntity):
     def async_update_ble_device(
         self, service_info: BluetoothServiceInfoBleak, change: BluetoothChange
     ) -> None:
-        _LOGGER.warning(f"New BLE device for {service_info.address}!")
+        _LOGGER.info(f"New BLE device for {service_info.address}!")
         self._device.set_ble_device(service_info.device)
         self.device_rssi = service_info.advertisement.rssi
         if callable(self._signal_strength_callback):
@@ -574,7 +574,7 @@ class PositionCalibrationBlind(PositionBlind):
     def async_update_calibration(self, end_position_info: MotionPositionInfo) -> None:
         """Update the calibration status of the motor."""
         _LOGGER.info("Calibrated: %s", end_position_info.up)
-        _LOGGER.warning("Running type: %s", self._running_type)
+        _LOGGER.info("Running type: %s", self._running_type)
         new_calibration_type = (
             MotionCalibrationType.CALIBRATED  # Calibrated if end positions are set
             if end_position_info.up
@@ -584,7 +584,7 @@ class PositionCalibrationBlind(PositionBlind):
             in [MotionRunningType.OPENING, MotionRunningType.CLOSING]
             else MotionCalibrationType.UNCALIBRATED
         )
-        _LOGGER.warning("New calibration type: %s", new_calibration_type)
+        _LOGGER.info("New calibration type: %s", new_calibration_type)
 
         if (
             self._calibration_type is MotionCalibrationType.CALIBRATING

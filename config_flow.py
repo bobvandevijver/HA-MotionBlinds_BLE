@@ -181,7 +181,7 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
         if motion_device:
             unique_id = motion_device.address
             if any(entry.unique_id == unique_id for entry in existing_entries):
-                _LOGGER.warning("Already configured")
+                _LOGGER.info("Already configured")
                 raise AlreadyConfigured()
             await self.async_set_unique_id(unique_id, raise_on_progress=False)
             self._discovery_info = motion_device
