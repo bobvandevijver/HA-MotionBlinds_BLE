@@ -290,13 +290,13 @@ class GenericBlind(CoverEntity):
             self._use_status_position_update_ui = False
             self._attr_is_opening = False
             self._attr_is_closing = False
-            self._attr_is_closed = None
-            self._attr_current_cover_position = None
-            self._attr_current_cover_tilt_position = None
-            if self._speed_callback is not None:
-                self._speed_callback(None)
-            if self._battery_callback is not None:
-                self._battery_callback(None)
+            # self._attr_is_closed = None
+            # self._attr_current_cover_position = None
+            # self._attr_current_cover_tilt_position = None
+            # if self._speed_callback is not None:
+            #     self._speed_callback(None)
+            # if self._battery_callback is not None:
+            #     self._battery_callback(None)
         self.async_write_ha_state()
 
     @callback
