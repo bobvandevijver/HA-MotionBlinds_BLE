@@ -154,6 +154,11 @@ class GenericBlind(CoverEntity):
             name=self._attr_name,
         )
 
+        # Defaults to allow HA start
+        self._attr_is_opening: bool | None = None
+        self._attr_is_closing: bool | None = None
+        self._attr_is_closed: bool | None = None
+
     async def async_added_to_hass(self) -> None:
         """Run when entity about to be added."""
         ble_device = async_ble_device_from_address(self.hass, self.device_address)
