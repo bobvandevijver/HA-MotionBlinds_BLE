@@ -153,7 +153,6 @@ class GenericBlind(CoverEntity):
             manufacturer=MANUFACTURER,
             name=self._attr_name,
         )
-        self._attr_is_closed: bool = None
 
     async def async_added_to_hass(self) -> None:
         """Run when entity about to be added."""
@@ -254,7 +253,7 @@ class GenericBlind(CoverEntity):
             else running_type != MotionRunningType.OPENING
         )
         if running_type != MotionRunningType.STILL:
-            self._attr_is_closed = None
+            self._attr_is_closed = False
         self.async_write_ha_state()
 
     @callback
